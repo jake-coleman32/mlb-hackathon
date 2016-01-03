@@ -2,7 +2,11 @@ setwd("/Users/Jake/Documents/Trumedia_hackathon/mlb-hackathon-coleman")
 library(dplyr)
 
 #Reading in the data
-p_all <- read.csv("all_pitches.csv",header=TRUE)
+p_13 <- read.csv("pitches_2013.csv",header=TRUE)
+p_14 <- read.csv("pitches_2014.csv",header=TRUE)
+p_15 <- read.csv("pitches_2015.csv",header=TRUE)
+p_all <- rbind(p_13,p_14,p_15)
+
 p_all$FB <- as.factor(p_all$FB)
 p_all$stadium <- as.factor(p_all$stadium)
 p_all$sameHand <- as.factor(p_all$sameHand)

@@ -79,26 +79,6 @@ X_15n <- apply(X_15,2,function(x){
 X_15n <- cbind(rep(1,dim(X_15n)[1]),as.data.frame(X_15n))
 names(X_15n) <- c("Int",names(X_15)) #intercept
 
-#Model fine but coefs don't differ from zero
-pois_mod <- glm(as.numeric(as.character(tot_HR))~ 
-                  as.numeric(as.character(ff_velo)) + 
-                  as.numeric(as.character(ff_xmov)) +
-                  as.numeric(as.character(ff_perc)) + 
-                  as.numeric(as.character(ff_zmov)) +
-                  as.numeric(as.character(ch_velo)) + 
-                  as.numeric(as.character(ch_xmov)) +
-                  as.numeric(as.character(ch_perc)) +
-                  as.numeric(as.character(ch_zmov))+
-                  as.numeric(as.character(cu_velo)) +
-                  as.numeric(as.character(cu_xmov)) +
-                  as.numeric(as.character(cu_perc)) +
-                  as.numeric(as.character(cu_zmov)),
-                family = poisson(link = "log"),
-                data = st_stand_15, offset = log(tot_pitches), 
-                subset = (tot_pitches>0))
-summary(pois_mod)
-1-pchisq(pois_mod$deviance,pois_mod$df.residual)
-
 ####JAGS CODE
 library(R2jags)
 library(R2WinBUGS)
@@ -155,6 +135,8 @@ lapply(beta_list,quantile,probs = c(.05,.95))#See 95% credible intervals
 
 beta_mat <- as.matrix(as.data.frame(beta_list))
 colnames(beta_mat) <- names(X_15n)
+
+#Posterior Coefficient estimates
 boxplot(beta_mat,las = 2,main = "Coefficient Distributions",
         ylab = "Values")
 abline(h=0)
